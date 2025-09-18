@@ -1,7 +1,7 @@
 print("Calculate fuel consumption.")
 Feed = input("Enter travel distance(kilometers): ")
 Distance = int(Feed)
-input("Enter fuel usage(liters): ")
+Feed = input("Enter fuel usage(liters): ")
 FuelUsage = int(Feed)
 Consumption = Distance / FuelUsage
 Consumption = int(Consumption)
