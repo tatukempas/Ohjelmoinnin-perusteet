@@ -1,0 +1,6 @@
+print("Program starting.")
+Brand = str(input("Instert car brand: "))
+Model = str(input("Insert car model. "))
+print("Car brand is ", Brand," ", sep='"', end="")
+print(" and the model is ", f"'{Model}'", ".")
+print("Program ending.")
