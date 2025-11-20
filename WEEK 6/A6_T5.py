@@ -3,7 +3,7 @@ def readValues(filename: str):
     with open(filename, "r", encoding="UTF-8") as f:
         for line in f:
             row = line.strip()
-            if row != "":
+            if row:
                 values.append(int(row))
     return values
 
@@ -13,7 +13,15 @@ def analyseValues(values):
     total = sum(values)
     greatest = max(values)
     average = total / count
+    return f"Count;Sum;Greatest;Average\n{count};{total};{greatest};{average:.2f}\n"
 
-    result = "Count;Sum;Greatest;Average\n"
-    result += "{};{};{};{:.2f}\n".format(count, total, greatest, average)
-    return result
+
+def main():
+    filename = input("Anna tiedoston nimi: ")
+    values = readValues(filename)
+    result = analyseValues(values)
+    print(result)
+
+
+if __name__ == "__main__":
+    main()
