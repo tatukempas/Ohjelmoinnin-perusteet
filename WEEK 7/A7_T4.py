@@ -9,52 +9,55 @@ class TIMESTAMP:
         self.price = 0.0
 
 
-def read_timestamps(filename):
-    timestamps = []
-    first = True
-    with open(filename, "r", encoding="utf-8") as file:
-        for line in file:
-            if first:
-                first = False
-                continue
+def readTimestamps(filename, timestamps):
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            first = True
+            for line in file:
+                if first:
+                    first = False
+                    continue
+                row = line.rstrip()
+                if not row:
+                    continue
+                columns = row.split(DELIMITER)
+                if len(columns) < 4:
+                    continue
+                try:
+                    ts = TIMESTAMP()
+                    ts.weekday = columns[0]
+                    ts.hour = columns[1]
+                    ts.consumption = float(columns[2])
+                    ts.price = float(columns[3])
+                    timestamps.append(ts)
+                except ValueError:
+                    continue
+    except FileNotFoundError:
+        print(f'File "{filename}" not found.')
 
-            row = line.rstrip()
-            if len(row) == 0:
-                continue
 
-            columns = row.split(DELIMITER)
-
-            ts = TIMESTAMP()
-            ts.weekday = columns[0]
-            ts.hour = columns[1]
-            ts.consumption = float(columns[2])
-            ts.price = float(columns[3])
-
-            timestamps.append(ts)
-            columns.clear()
-
-    return timestamps
-
-
-def print_timestamps(timestamps):
+def displayTimestamps(timestamps):
     print("Electricity usage:")
+    total_sum = 0.0
     for ts in timestamps:
         total = ts.price * ts.consumption
-        print(" - {} {}, price {:.2f}, consumption {:.2f} kWh, total {:.2f} €"
-              .format(ts.weekday, ts.hour, ts.price, ts.consumption, total))
+        total_sum += total
+        print(
+            f" - {ts.weekday} {ts.hour}, price {ts.price:.2f}, "
+            f"consumption {ts.consumption:.2f} kWh, total {total:.2f} €"
+        )
 
 
 def main():
     print("Program starting.")
     filename = input("Insert filename: ")
-    print('Reading file "{}".'.format(filename))
-    timestamps = read_timestamps(filename)
-    if len(timestamps) > 0:
-        print_timestamps(timestamps)
+    print(f'Reading file "{filename}".')
+    timestamps = []
+    readTimestamps(filename, timestamps)
+    displayTimestamps(timestamps)
     print("Program ending.")
 
 
 if __name__ == "__main__":
     main()
-
 
